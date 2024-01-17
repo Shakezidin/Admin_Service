@@ -1,0 +1,78 @@
+syntax ="proto3";
+
+package pb;
+
+option go_package = ".";
+
+
+service Coordinator {
+    rpc AddCatagory(Category)returns(Responce);
+    rpc AvailablePackages(Packages) returns (PackagesResponce);
+    rpc CoordinatorViewPackage(View)returns(Package);
+    rpc AdminAvailablePackages(Packages)returns(PackagesResponce);
+    rpc AdminPacakgeStatus(View)returns(Responce);
+}
+
+message Responce{
+    string status = 1;
+    string message = 2;
+}
+
+message View{
+    int64 Id = 1;
+}
+
+message Packages{
+
+}
+
+message PackagesResponce{
+    repeated Package Packages = 1;
+}
+
+message Category{
+    int64 CategoryId = 1;
+    string categoryName = 2;
+}
+
+message Package{
+    int64  PackageId = 1;
+    string packagename = 2;
+    int64 CoorinatorId = 3;
+    string startlocation = 4;
+    string endlocation = 5;
+    string startdatetime = 6;
+    string enddatetime = 7;
+    int64  price = 8;
+    string image = 9;
+    int64  destinationCount = 10;
+    string destination = 11;
+    string Description = 12;
+    int64 maxCapacity = 13;
+    int64  categoryId = 14;  
+    Category category = 15;
+    repeated Destination Destinations = 16;
+}
+
+message Destination{
+    int64 destinationId = 1;
+    string DestinationName = 2;
+    string Description = 3;
+    int64 minprice = 4;
+    int64 maxCapacity = 5;
+    string image = 6;
+    repeated Activity activity = 7;
+    int64 PackageID = 8;
+}
+
+message Activity{
+    int64 activityId = 1;
+    string activityname = 2;
+    string description = 3;
+    string Location = 4;
+    string ActivityType = 5;
+    int64 Amount = 6;
+    string date = 7;
+    string time = 8;
+    int64 destinationId = 9;
+}
