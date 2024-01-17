@@ -8,3 +8,4 @@ type Admin struct {
 	Password string	`gorm:"not null"`
 	Role     string `gorm:"not null"`
 }
+

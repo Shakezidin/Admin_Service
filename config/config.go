@@ -17,6 +17,7 @@ type Config struct {
 	SID                 string `mapstructure:"SID"`
 	TOKEN               string `mapstructure:"TOKEN"`
 	SERVICETOKEN        string `mapstructure:"SERVICETOKEN"`
+	COORDINATORAPORT  	string `mapstructure:"COORDINATORAPORT"`
 }
 
 func LoadConfig() *Config {
