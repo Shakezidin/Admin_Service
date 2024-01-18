@@ -25,3 +25,21 @@ func (a *AdminService) AddCategory(p *adminpb.AdminCategory) (*adminpb.AdminResp
 		Message: resp.Message,
 	}, nil
 }
+
+func (a *AdminService) ViewCategories(p *adminpb.AdminView) (*adminpb.AdminCatagories, error) {
+	var ctx = context.Background()
+	resp, err := a.codClient.ViewCatagories(ctx, &cpb.View{})
+	if err != nil {
+		return &adminpb.AdminCatagories{}, err
+	}
+	var catagory adminpb.AdminCategory
+	var catagories []*adminpb.AdminCategory
+	for _, ctgry := range resp.Catagories {
+		catagory.Categoryid = ctgry.CategoryId
+		catagory.Category = ctgry.CategoryName
+		catagories = append(catagories, &catagory)
+	}
+	return &adminpb.AdminCatagories{
+		Catagory: catagories,
+	}, nil
+}

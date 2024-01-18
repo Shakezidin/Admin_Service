@@ -7,7 +7,7 @@ import (
 )
 
 func (a *AdminHandler) AdminViewPackages(ctx context.Context, p *adminpb.AdminView) (*adminpb.AdminPackages, error) {
-	rslt, err := a.svc.ViewPackagesSVC()
+	rslt, err := a.svc.ViewPackagesSVC(p)
 	if err != nil {
 		return &adminpb.AdminPackages{}, err
 	}

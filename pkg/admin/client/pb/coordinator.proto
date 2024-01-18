@@ -7,12 +7,17 @@ option go_package = ".";
 
 service Coordinator {
     rpc AddCatagory(Category)returns(Responce);
-    rpc AvailablePackages(Packages) returns (PackagesResponce);
+    rpc AvailablePackages(View) returns (PackagesResponce);
     rpc CoordinatorViewPackage(View)returns(Package);
-    rpc AdminAvailablePackages(Packages)returns(PackagesResponce);
     rpc AdminPacakgeStatus(View)returns(Responce);
+    rpc ViewCatagories(View)returns(Catagories);
+    rpc CoordinatorViewDestination(View)returns(Destination);
+    rpc CoordinatorViewActivity(View)returns(Activity);
 }
 
+message Catagories{
+    repeated Category Catagories = 1;
+}
 message Responce{
     string status = 1;
     string message = 2;
@@ -20,6 +25,7 @@ message Responce{
 
 message View{
     int64 Id = 1;
+    string status = 2;
 }
 
 message Packages{

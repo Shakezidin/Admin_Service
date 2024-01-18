@@ -41,8 +41,9 @@ func (a *AdminService) LoginService(p *adminpb.AdminLogin) (*adminpb.AdminRespon
 	return adminn, nil
 }
 
-func NewAdminService(repos inter.RepoInterface) interr.ServiceInterface {
+func NewAdminService(repos inter.RepoInterface, codClient clientpb.CoordinatorClient) interr.ServiceInterface {
 	return &AdminService{
-		Repo: repos,
+		Repo:      repos,
+		codClient: codClient,
 	}
 }

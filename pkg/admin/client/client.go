@@ -15,6 +15,6 @@ func ClientDial(cfg config.Config) (pb.CoordinatorClient, error) {
 		log.Printf("error Dialing to grpc client: %s, ", cfg.COORDINATORAPORT)
 		return nil, err
 	}
-	log.Printf("succesfully Connected to Admin Client at port: %v", cfg.COORDINATORAPORT)
+	log.Printf("succesfully Connected to coordinator Client at port: %v", cfg.COORDINATORAPORT)
 	return pb.NewCoordinatorClient(grpc), nil
 }

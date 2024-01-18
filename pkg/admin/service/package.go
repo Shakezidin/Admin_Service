@@ -8,18 +8,20 @@ import (
 	adminpb "github.com/Shakezidin/pkg/admin/pb"
 )
 
-func (a *AdminService) ViewPackagesSVC() (*adminpb.AdminPackages, error) {
+func (a *AdminService) ViewPackagesSVC(p *adminpb.AdminView) (*adminpb.AdminPackages, error) {
 	var ctx = context.Background()
 
-	result, err := a.codClient.AdminAvailablePackages(ctx, &cpb.Packages{})
+	result, err := a.codClient.AvailablePackages(ctx, &cpb.View{
+		Status: p.Status,
+	})
 	if err != nil {
 		return &adminpb.AdminPackages{
 			Packages: nil,
 		}, errors.New("error while fetching all packages ")
 	}
-	var pkg adminpb.AdminPackage
 	var pkgs []*adminpb.AdminPackage
 	for _, pakg := range result.Packages {
+		var pkg adminpb.AdminPackage
 		pkg.PackageId = pakg.PackageId
 		pkg.Destination = pakg.Destination
 		pkg.DestinationCount = int64(pakg.DestinationCount)
@@ -50,10 +52,14 @@ func (a *AdminService) ViewPackageSVC(p *adminpb.AdminView) (*adminpb.AdminPacka
 		return &adminpb.AdminPackage{}, errors.New("error while fetching all packages ")
 	}
 
-	var dstn adminpb.AdminDestination
-	var dstns []*adminpb.AdminDestination
-
+	var dstns = []*adminpb.AdminDestination{}
+	
+	var ctgry = adminpb.AdminCategory{
+		Category: result.Category.CategoryName,
+	}
+	
 	for _, dst := range result.Destinations {
+		var dstn = adminpb.AdminDestination{}
 		dstn.Description = dst.Description
 		dstn.DestinationName = dst.DestinationName
 		dstn.Image = dst.Image
@@ -62,9 +68,8 @@ func (a *AdminService) ViewPackageSVC(p *adminpb.AdminView) (*adminpb.AdminPacka
 		dstn.Minprice = int64(dst.Minprice)
 		dstns = append(dstns, &dstn)
 	}
-
 	var pkg adminpb.AdminPackage
-	pkg.Category.Category = result.Category.CategoryName
+	pkg.Category = &ctgry
 	pkg.PackageId = result.PackageId
 	pkg.Destination = result.Destination
 	pkg.DestinationCount = int64(result.DestinationCount)
@@ -78,6 +83,7 @@ func (a *AdminService) ViewPackageSVC(p *adminpb.AdminView) (*adminpb.AdminPacka
 	pkg.Description = result.Description
 	pkg.CoorinatorId = result.CoorinatorId
 	pkg.MaxCapacity = result.MaxCapacity
+	pkg.Destinations = dstns
 
 	return &pkg, nil
 }
