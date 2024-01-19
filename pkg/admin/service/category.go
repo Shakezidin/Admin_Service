@@ -35,7 +35,7 @@ func (a *AdminService) ViewCategories(p *adminpb.AdminView) (*adminpb.AdminCatag
 	var catagory adminpb.AdminCategory
 	var catagories []*adminpb.AdminCategory
 	for _, ctgry := range resp.Catagories {
-		catagory.Categoryid = ctgry.CategoryId
+		catagory.Categoryid = ctgry.CatagoryId
 		catagory.Category = ctgry.CategoryName
 		catagories = append(catagories, &catagory)
 	}

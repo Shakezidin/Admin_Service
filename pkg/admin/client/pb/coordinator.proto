@@ -37,7 +37,7 @@ message PackagesResponce{
 }
 
 message Category{
-    int64 CategoryId = 1;
+    int64 CatagoryId = 1;
     string categoryName = 2;
 }
 
@@ -47,8 +47,8 @@ message Package{
     int64 CoorinatorId = 3;
     string startlocation = 4;
     string endlocation = 5;
-    string startdatetime = 6;
-    string enddatetime = 7;
+    string startdate = 6;
+    string enddate = 7;
     int64  price = 8;
     string image = 9;
     int64  destinationCount = 10;
