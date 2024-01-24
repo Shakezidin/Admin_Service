@@ -10,8 +10,8 @@ func (a *AdminHandler) AdminLoginRequest(ctx context.Context, p *adminpb.AdminLo
 	admin, err := a.svc.LoginService(p)
 	if err != nil {
 		return &adminpb.AdminResponce{
-			Status:  "False",
-			Message: "error while admin login",
+			Status:  admin.Status,
+			Message: admin.Message,
 		}, err
 	}
 	return admin, nil

@@ -26,6 +26,7 @@ message Responce{
 message View{
     int64 Id = 1;
     string status = 2;
+    int64 page = 3;
 }
 
 message Packages{
@@ -44,9 +45,9 @@ message Category{
 message Package{
     int64  PackageId = 1;
     string packagename = 2;
-    int64 CoorinatorId = 3;
+    int64  CoorinatorId = 3;
     string startlocation = 4;
-    string endlocation = 5;
+    int64  availableSpace = 5;
     string startdate = 6;
     string enddate = 7;
     int64  price = 8;
@@ -54,7 +55,7 @@ message Package{
     int64  destinationCount = 10;
     string destination = 11;
     string Description = 12;
-    int64 maxCapacity = 13;
+    int64  maxCapacity = 13;
     int64  categoryId = 14;  
     Category category = 15;
     repeated Destination Destinations = 16;

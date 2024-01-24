@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"errors"
 
 	cpb "github.com/Shakezidin/pkg/admin/client/pb"
 	adminpb "github.com/Shakezidin/pkg/admin/pb"
@@ -15,7 +14,7 @@ func (a *AdminService) ViewDestination(p *adminpb.AdminView) (*adminpb.AdminDest
 		Id: p.Id,
 	})
 	if err != nil {
-		return &adminpb.AdminDestination{}, errors.New("error while fetching destination")
+		return &adminpb.AdminDestination{}, err
 	}
 
 	var actvtys = []*adminpb.AdminActivity{}
@@ -52,16 +51,16 @@ func (a *AdminService) ViewActivity(p *adminpb.AdminView) (*adminpb.AdminActivit
 		Id: p.Id,
 	})
 	if err != nil {
-		return &adminpb.AdminActivity{}, errors.New("error while fetching activity")
+		return &adminpb.AdminActivity{}, err
 	}
 	return &adminpb.AdminActivity{
-		ActivityId: result.ActivityId,
+		ActivityId:   result.ActivityId,
 		Activityname: result.Activityname,
-		Description: result.Description,
-		Location: result.Location,
+		Description:  result.Description,
+		Location:     result.Location,
 		ActivityType: result.ActivityType,
-		Amount: result.Amount,
-		Date: result.Date,
-		Time: result.Time,
-	},nil
+		Amount:       result.Amount,
+		Date:         result.Date,
+		Time:         result.Time,
+	}, nil
 }

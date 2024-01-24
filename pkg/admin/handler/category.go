@@ -10,17 +10,17 @@ func (a *AdminHandler) AdminAddCategory(ctx context.Context, p *adminpb.AdminCat
 	admin, err := a.svc.AddCategory(p)
 	if err != nil {
 		return &adminpb.AdminResponce{
-			Status:  "False",
-			Message: "error while admin login",
+			Status:  admin.Status,
+			Message: admin.Message,
 		}, err
 	}
 	return admin, nil
 }
 
-func (a *AdminHandler)AdminViewCategories(ctx context.Context, p *adminpb.AdminView) (*adminpb.AdminCatagories, error) {
+func (a *AdminHandler) AdminViewCategories(ctx context.Context, p *adminpb.AdminView) (*adminpb.AdminCatagories, error) {
 	catagories, err := a.svc.ViewCategories(p)
 	if err != nil {
-		return &adminpb.AdminCatagories{}, err
+		return nil, err
 	}
 	return catagories, nil
 }

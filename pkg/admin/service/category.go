@@ -15,26 +15,28 @@ func (a *AdminService) AddCategory(p *adminpb.AdminCategory) (*adminpb.AdminResp
 	resp, err := a.codClient.AddCatagory(ctx, &catogory)
 	if err != nil {
 		return &adminpb.AdminResponce{
-			Status:  "fail",
-			Message: "error while adding catagory",
+			Status:  resp.Status,
+			Message: resp.Message,
 		}, err
 	}
 
 	return &adminpb.AdminResponce{
-		Status:  "success",
+		Status:  resp.Status,
 		Message: resp.Message,
 	}, nil
 }
 
 func (a *AdminService) ViewCategories(p *adminpb.AdminView) (*adminpb.AdminCatagories, error) {
 	var ctx = context.Background()
-	resp, err := a.codClient.ViewCatagories(ctx, &cpb.View{})
+	resp, err := a.codClient.ViewCatagories(ctx, &cpb.View{
+		Page: p.Page,
+	})
 	if err != nil {
 		return &adminpb.AdminCatagories{}, err
 	}
-	var catagory adminpb.AdminCategory
 	var catagories []*adminpb.AdminCategory
 	for _, ctgry := range resp.Catagories {
+		var catagory adminpb.AdminCategory
 		catagory.Categoryid = ctgry.CatagoryId
 		catagory.Category = ctgry.CategoryName
 		catagories = append(catagories, &catagory)
