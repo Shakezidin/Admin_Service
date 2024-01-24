@@ -30,8 +30,8 @@ func (a *AdminService) LoginService(p *adminpb.AdminLogin) (*adminpb.AdminRespon
 
 	token, err := jwt.GenerateToken(admin.Email, p.Role)
 	if err != nil {
-		log.Print("Generate jwt error")
-		return nil, err
+		log.Print("error while generating jwt")
+		return nil, errors.New("error while generating jwt")
 	}
 	adminn := &adminpb.AdminResponce{
 		Status:  "Success",
@@ -41,8 +41,9 @@ func (a *AdminService) LoginService(p *adminpb.AdminLogin) (*adminpb.AdminRespon
 	return adminn, nil
 }
 
-func NewAdminService(repos inter.RepoInterface) interr.ServiceInterface {
+func NewAdminService(repos inter.RepoInterface, codClient clientpb.CoordinatorClient) interr.ServiceInterface {
 	return &AdminService{
-		Repo: repos,
+		Repo:      repos,
+		codClient: codClient,
 	}
 }

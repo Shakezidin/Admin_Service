@@ -10,18 +10,26 @@ service Admin {
     rpc AdminAddCategory(AdminCategory)returns(AdminResponce);
     rpc AdminViewPackages(AdminView)returns(AdminPackages);
     rpc AdminViewpackage(AdminView)returns(AdminPackage);
-    rpc AdminActivePackage(AdminView)returns(AdminPackages);
-    rpc AdminNotActivePackage(AdminView)returns(AdminPackages);
     rpc AdminPacakgeStatus(AdminView)returns(AdminResponce);
+    rpc AdminViewCategories(AdminView)returns(AdminCatagories);
+    rpc AdminViewDestination(AdminView)returns(AdminDestination);
+    rpc AdminViewActivity(AdminView)returns(AdminActivity);
 }
 
 message AdminView{
     int64 Id = 1; 
+    string status = 2;
+    int64 page = 3;
+}
+
+message AdminCatagories{
+    repeated AdminCategory catagory = 1;
 }
 
 message AdminResponce{
     string status = 1;
     string message = 2;
+    int64  Id = 3;
 }
 
 message AdminCategory{
@@ -63,7 +71,7 @@ message AdminPackage{
     string packagename = 2;
     int64  CoorinatorId = 3;
     string startlocation = 4;
-    string endlocation = 5;
+    int64  availableSpace = 5;
     string startdate = 6;
     string enddate = 7;
     int64  price = 8;
@@ -76,6 +84,7 @@ message AdminPackage{
     AdminCategory category = 15;
     repeated AdminDestination Destinations = 16;
 }
+
 
 message AdminPackages{
     repeated AdminPackage packages = 1;

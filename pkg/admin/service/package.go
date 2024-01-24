@@ -2,33 +2,35 @@ package service
 
 import (
 	"context"
-	"errors"
 
 	cpb "github.com/Shakezidin/pkg/admin/client/pb"
 	adminpb "github.com/Shakezidin/pkg/admin/pb"
 )
 
-func (a *AdminService) ViewPackagesSVC() (*adminpb.AdminPackages, error) {
+func (a *AdminService) ViewPackagesSVC(p *adminpb.AdminView) (*adminpb.AdminPackages, error) {
 	var ctx = context.Background()
 
-	result, err := a.codClient.AdminAvailablePackages(ctx, &cpb.Packages{})
+	result, err := a.codClient.AvailablePackages(ctx, &cpb.View{
+		Status: p.Status,
+		Page:   p.Page,
+	})
 	if err != nil {
 		return &adminpb.AdminPackages{
 			Packages: nil,
-		}, errors.New("error while fetching all packages ")
+		}, err
 	}
-	var pkg adminpb.AdminPackage
 	var pkgs []*adminpb.AdminPackage
 	for _, pakg := range result.Packages {
+		var pkg adminpb.AdminPackage
 		pkg.PackageId = pakg.PackageId
 		pkg.Destination = pakg.Destination
 		pkg.DestinationCount = int64(pakg.DestinationCount)
-		pkg.Enddate = pakg.Enddatetime
-		pkg.Endlocation = pakg.Endlocation
+		pkg.Enddate = pakg.Enddate
 		pkg.Image = pakg.Image
 		pkg.Packagename = pakg.Packagename
+		pkg.AvailableSpace = pakg.AvailableSpace
 		pkg.Price = int64(pakg.Price)
-		pkg.Startdate = pakg.Startdatetime
+		pkg.Startdate = pakg.Startdate
 		pkg.Startlocation = pakg.Startlocation
 		pkg.Description = pakg.Description
 		pkg.CoorinatorId = pakg.CoorinatorId
@@ -47,37 +49,38 @@ func (a *AdminService) ViewPackageSVC(p *adminpb.AdminView) (*adminpb.AdminPacka
 		Id: p.Id,
 	})
 	if err != nil {
-		return &adminpb.AdminPackage{}, errors.New("error while fetching all packages ")
+		return &adminpb.AdminPackage{}, err
 	}
 
-	var dstn adminpb.AdminDestination
-	var dstns []*adminpb.AdminDestination
+	var dstns = []*adminpb.AdminDestination{}
+
+	var ctgry = adminpb.AdminCategory{
+		Category: result.Category.CategoryName,
+	}
 
 	for _, dst := range result.Destinations {
+		var dstn = adminpb.AdminDestination{}
 		dstn.Description = dst.Description
 		dstn.DestinationName = dst.DestinationName
 		dstn.Image = dst.Image
-		dstn.MaxCapacity = int64(dst.MaxCapacity)
 		dstn.DestinationId = dst.DestinationId
-		dstn.Minprice = int64(dst.Minprice)
 		dstns = append(dstns, &dstn)
 	}
-
 	var pkg adminpb.AdminPackage
-	pkg.Category.Category = result.Category.CategoryName
+	pkg.Category = &ctgry
 	pkg.PackageId = result.PackageId
 	pkg.Destination = result.Destination
 	pkg.DestinationCount = int64(result.DestinationCount)
-	pkg.Enddate = result.Enddatetime
-	pkg.Endlocation = result.Endlocation
+	pkg.Enddate = result.Enddate
 	pkg.Image = result.Image
 	pkg.Packagename = result.Packagename
+	pkg.AvailableSpace = result.AvailableSpace
 	pkg.Price = int64(result.Price)
-	pkg.Startdate = result.Startdatetime
+	pkg.Startdate = result.Startdate
 	pkg.Startlocation = result.Startlocation
 	pkg.Description = result.Description
-	pkg.CoorinatorId = result.CoorinatorId
 	pkg.MaxCapacity = result.MaxCapacity
+	pkg.Destinations = dstns
 
 	return &pkg, nil
 }
@@ -92,7 +95,7 @@ func (a *AdminService) PackageStatusSVC(p *adminpb.AdminView) (*adminpb.AdminRes
 		return &adminpb.AdminResponce{
 			Status:  result.Status,
 			Message: result.Message,
-		}, errors.New("error while fetching all packages ")
+		}, err
 	}
 
 	return &adminpb.AdminResponce{
