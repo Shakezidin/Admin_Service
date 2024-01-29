@@ -6,4 +6,5 @@ import (
 
 type RepoInterface interface {
 	FetchAdmin(email string) (*DOM.Admin, error)
+	UpdateaWallet(amount float64) error
 }
