@@ -14,6 +14,11 @@ service Admin {
     rpc AdminViewCategories(AdminView)returns(AdminCatagories);
     rpc AdminViewDestination(AdminView)returns(AdminDestination);
     rpc AdminViewActivity(AdminView)returns(AdminActivity);
+    rpc AdminAddWalletRequest(AdminAddWallet)returns(AdminResponce);
+}
+
+message AdminAddWallet{
+    float amount = 1;
 }
 
 message AdminView{
