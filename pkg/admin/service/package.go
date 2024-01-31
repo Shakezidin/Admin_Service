@@ -53,14 +53,14 @@ func (a *AdminService) ViewPackageSVC(p *adminpb.AdminView) (*adminpb.AdminPacka
 		return &adminpb.AdminPackage{}, err
 	}
 
-	var dstns = []*adminpb.AdminDestination{}
+	var dstns  []*adminpb.AdminDestination
 
 	var ctgry = adminpb.AdminCategory{
 		Category: result.Category.CategoryName,
 	}
 
 	for _, dst := range result.Destinations {
-		var dstn = adminpb.AdminDestination{}
+		var dstn adminpb.AdminDestination
 		dstn.Description = dst.Description
 		dstn.DestinationName = dst.DestinationName
 		dstn.Image = dst.Image
