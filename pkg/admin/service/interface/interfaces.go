@@ -14,4 +14,5 @@ type ServiceInterface interface {
 	ViewDestination(p *adminpb.AdminView) (*adminpb.AdminDestination, error)
 	ViewActivity(p *adminpb.AdminView) (*adminpb.AdminActivity, error) 
 	AddWalletSVC(p *adminpb.AdminAddWallet)(*adminpb.AdminResponce,error)
+	ReduseWalletSVC(p *adminpb.AdminAddWallet) (*adminpb.AdminResponce, error)
 }

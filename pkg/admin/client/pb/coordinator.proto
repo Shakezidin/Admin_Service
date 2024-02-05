@@ -18,6 +18,7 @@ service Coordinator {
 message Catagories{
     repeated Category Catagories = 1;
 }
+
 message Responce{
     string status = 1;
     string message = 2;
