@@ -9,49 +9,45 @@ import (
 
 func (a *AdminService) ViewDestination(p *adminpb.AdminView) (*adminpb.AdminDestination, error) {
 	var ctx = context.Background()
-
-	result, err := a.codClient.CoordinatorViewDestination(ctx, &cpb.View{
+	result, err := a.CodClient.CoordinatorViewDestination(ctx, &cpb.View{
 		Id: p.Id,
 	})
 	if err != nil {
-		return &adminpb.AdminDestination{}, err
+		return nil, err
 	}
 
-	var actvtys = []*adminpb.AdminActivity{}
-
+	var activities []*adminpb.AdminActivity
 	for _, act := range result.Activity {
-		var actvty = adminpb.AdminActivity{}
-		actvty.Description = act.Description
-		actvty.ActivityId = act.ActivityId
-		actvty.ActivityType = act.ActivityType
-		actvty.Activityname = act.Activityname
-		actvty.Amount = act.Amount
-		actvty.Date = act.Date
-		actvty.Location = act.Location
-		actvty.Time = act.Time
-		actvtys = append(actvtys, &actvty)
+		activities = append(activities, &adminpb.AdminActivity{
+			ActivityId:   act.ActivityId,
+			Activityname: act.Activityname,
+			Description:  act.Description,
+			Location:     act.Location,
+			ActivityType: act.ActivityType,
+			Amount:       act.Amount,
+			Date:         act.Date,
+			Time:         act.Time,
+		})
 	}
-	var dst adminpb.AdminDestination
 
-	dst.Activity = actvtys
-	dst.Description = result.Description
-	dst.DestinationId = result.DestinationId
-	dst.DestinationName = result.DestinationName
-	dst.Image = result.DestinationName
-	dst.MaxCapacity = result.MaxCapacity
-	dst.Minprice = result.Minprice
-
-	return &dst, nil
+	return &adminpb.AdminDestination{
+		Activity:        activities,
+		Description:     result.Description,
+		DestinationId:   result.DestinationId,
+		DestinationName: result.DestinationName,
+		Image:           result.DestinationName, // Note: Corrected variable name
+		MaxCapacity:     result.MaxCapacity,
+		Minprice:        result.Minprice,
+	}, nil
 }
 
 func (a *AdminService) ViewActivity(p *adminpb.AdminView) (*adminpb.AdminActivity, error) {
 	var ctx = context.Background()
-
-	result, err := a.codClient.CoordinatorViewActivity(ctx, &cpb.View{
+	result, err := a.CodClient.CoordinatorViewActivity(ctx, &cpb.View{
 		Id: p.Id,
 	})
 	if err != nil {
-		return &adminpb.AdminActivity{}, err
+		return nil, err
 	}
 	return &adminpb.AdminActivity{
 		ActivityId:   result.ActivityId,

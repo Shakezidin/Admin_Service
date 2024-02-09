@@ -9,98 +9,90 @@ import (
 
 func (a *AdminService) ViewPackagesSVC(p *adminpb.AdminView) (*adminpb.AdminPackages, error) {
 	var ctx = context.Background()
-
-	result, err := a.codClient.AvailablePackages(ctx, &cpb.View{
+	result, err := a.CodClient.AvailablePackages(ctx, &cpb.View{
 		Status: p.Status,
 		Page:   p.Page,
 	})
 	if err != nil {
-		return &adminpb.AdminPackages{
-			Packages: nil,
-		}, err
-	}
-	var pkgs []*adminpb.AdminPackage
-	for _, pakg := range result.Packages {
-		var pkg adminpb.AdminPackage
-		pkg.PackageId = pakg.PackageId
-		pkg.Destination = pakg.Destination
-		pkg.DestinationCount = int64(pakg.DestinationCount)
-		pkg.Enddate = pakg.Enddate
-		pkg.Image = pakg.Image
-		pkg.Packagename = pakg.Packagename
-		pkg.AvailableSpace = pakg.AvailableSpace
-		pkg.Price = int64(pakg.Price)
-		pkg.Startdate = pakg.Startdate
-		pkg.Starttime = pakg.Starttime
-		pkg.Startlocation = pakg.Startlocation
-		pkg.Description = pakg.Description
-		pkg.CoorinatorId = pakg.CoorinatorId
-		pkgs = append(pkgs, &pkg)
+		return nil, err
 	}
 
-	return &adminpb.AdminPackages{
-		Packages: pkgs,
-	}, nil
+	var packages []*adminpb.AdminPackage
+	for _, pack := range result.Packages {
+		pkg := &adminpb.AdminPackage{
+			PackageId:        pack.PackageId,
+			Destination:      pack.Destination,
+			DestinationCount: int64(pack.DestinationCount),
+			Enddate:          pack.Enddate,
+			Image:            pack.Image,
+			Packagename:      pack.Packagename,
+			AvailableSpace:   pack.AvailableSpace,
+			Price:            int64(pack.Price),
+			Startdate:        pack.Startdate,
+			Starttime:        pack.Starttime,
+			Startlocation:    pack.Startlocation,
+			Description:      pack.Description,
+			CoorinatorId:     pack.CoorinatorId,
+		}
+		packages = append(packages, pkg)
+	}
+
+	return &adminpb.AdminPackages{Packages: packages}, nil
 }
 
 func (a *AdminService) ViewPackageSVC(p *adminpb.AdminView) (*adminpb.AdminPackage, error) {
 	var ctx = context.Background()
-
-	result, err := a.codClient.CoordinatorViewPackage(ctx, &cpb.View{
+	result, err := a.CodClient.CoordinatorViewPackage(ctx, &cpb.View{
 		Id: p.Id,
 	})
 	if err != nil {
-		return &adminpb.AdminPackage{}, err
+		return nil, err
 	}
 
-	var dstns  []*adminpb.AdminDestination
+	var destinations []*adminpb.AdminDestination
+	for _, dst := range result.Destinations {
+		dest := &adminpb.AdminDestination{
+			Description:     dst.Description,
+			DestinationName: dst.DestinationName,
+			Image:           dst.Image,
+			DestinationId:   dst.DestinationId,
+		}
+		destinations = append(destinations, dest)
+	}
 
-	var ctgry = adminpb.AdminCategory{
+	category := &adminpb.AdminCategory{
 		Category: result.Category.CategoryName,
 	}
 
-	for _, dst := range result.Destinations {
-		var dstn adminpb.AdminDestination
-		dstn.Description = dst.Description
-		dstn.DestinationName = dst.DestinationName
-		dstn.Image = dst.Image
-		dstn.DestinationId = dst.DestinationId
-		dstns = append(dstns, &dstn)
-	}
-	var pkg adminpb.AdminPackage
-	pkg.Category = &ctgry
-	pkg.PackageId = result.PackageId
-	pkg.Destination = result.Destination
-	pkg.DestinationCount = int64(result.DestinationCount)
-	pkg.Enddate = result.Enddate
-	pkg.Image = result.Image
-	pkg.Packagename = result.Packagename
-	pkg.AvailableSpace = result.AvailableSpace
-	pkg.Price = int64(result.Price)
-	pkg.Startdate = result.Startdate
-	pkg.Starttime = result.Starttime
-	pkg.Startlocation = result.Startlocation
-	pkg.Description = result.Description
-	pkg.MaxCapacity = result.MaxCapacity
-	pkg.Destinations = dstns
-
-	return &pkg, nil
+	return &adminpb.AdminPackage{
+		Category:         category,
+		PackageId:        result.PackageId,
+		Destination:      result.Destination,
+		DestinationCount: int64(result.DestinationCount),
+		Enddate:          result.Enddate,
+		Image:            result.Image,
+		Packagename:      result.Packagename,
+		AvailableSpace:   result.AvailableSpace,
+		Price:            int64(result.Price),
+		Startdate:        result.Startdate,
+		Starttime:        result.Starttime,
+		Startlocation:    result.Startlocation,
+		Description:      result.Description,
+		MaxCapacity:      result.MaxCapacity,
+		Destinations:     destinations,
+	}, nil
 }
 
-func (a *AdminService) PackageStatusSVC(p *adminpb.AdminView) (*adminpb.AdminResponce, error) {
+func (a *AdminService) PackageStatusSVC(p *adminpb.AdminView) (*adminpb.AdminResponse, error) {
 	var ctx = context.Background()
-
-	result, err := a.codClient.AdminPacakgeStatus(ctx, &cpb.View{
+	result, err := a.CodClient.AdminPacakgeStatus(ctx, &cpb.View{
 		Id: p.Id,
 	})
 	if err != nil {
-		return &adminpb.AdminResponce{
-			Status:  result.Status,
-			Message: result.Message,
-		}, err
+		return nil, err
 	}
 
-	return &adminpb.AdminResponce{
+	return &adminpb.AdminResponse{
 		Status:  result.Status,
 		Message: result.Message,
 	}, nil

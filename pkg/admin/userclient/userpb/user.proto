@@ -1,0 +1,37 @@
+syntax ="proto3";
+
+package userpb;
+
+option go_package = ".";
+
+
+service User{
+    rpc UsersCount(UserView)returns(Usercount);
+    rpc UserViewUsers(UserView)returns(UserUsers);
+    rpc UserViewUser(UserView)returns(UserSignup);
+}
+
+message Usercount{
+    int64 Usercount = 1;
+} 
+
+message UserUsers{
+    repeated UserSignup users =1;
+}
+
+message UserSignup{
+    string name =1;
+    string email = 2;
+    string phone = 3;
+    string password = 4;
+    string role = 5;
+    int64  Id = 6;
+}
+
+message UserView{
+    int64 Id = 1;
+    string status = 2;
+    int64 page = 3;
+    int64 userId = 4;
+}
+ 

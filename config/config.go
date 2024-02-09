@@ -7,17 +7,18 @@ import (
 )
 
 type Config struct {
-	Host                string `mapstructure:"HOST"`
-	User                string `mapstructure:"USER"`
-	Password            string `mapstructure:"PASSWORD"`
-	Database            string `mapstructure:"DATABASE"`
-	Port                string `mapstructure:"PORT"`
-	Sslmode             string `mapstructure:"SSLMODE"`
-	GRPCADMINPORT       string `mapstructure:"GRPCADMINPORT"`
-	SID                 string `mapstructure:"SID"`
-	TOKEN               string `mapstructure:"TOKEN"`
-	SERVICETOKEN        string `mapstructure:"SERVICETOKEN"`
-	COORDINATORAPORT  	string `mapstructure:"COORDINATORAPORT"`
+	Host             string `mapstructure:"HOST"`
+	User             string `mapstructure:"USER"`
+	Password         string `mapstructure:"PASSWORD"`
+	Database         string `mapstructure:"DATABASE"`
+	Port             string `mapstructure:"PORT"`
+	Sslmode          string `mapstructure:"SSLMODE"`
+	GRPCADMINPORT    string `mapstructure:"GRPCADMINPORT"`
+	SID              string `mapstructure:"SID"`
+	TOKEN            string `mapstructure:"TOKEN"`
+	SERVICETOKEN     string `mapstructure:"SERVICETOKEN"`
+	COORDINATORAPORT string `mapstructure:"COORDINATORAPORT"`
+	USERPORT         string `mapstructure:"USERPORT"`
 }
 
 func LoadConfig() *Config {

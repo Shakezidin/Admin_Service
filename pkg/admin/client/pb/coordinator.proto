@@ -13,6 +13,81 @@ service Coordinator {
     rpc ViewCatagories(View)returns(Catagories);
     rpc CoordinatorViewDestination(View)returns(Destination);
     rpc CoordinatorViewActivity(View)returns(Activity);
+    rpc ViewCoordinators(View)returns(Users);
+    rpc ViewHistory(View)returns(Histories);
+    rpc ViewBooking(View)returns(History);
+    rpc ViewDashBord(View)returns(DashBord);
+    rpc SearchBooking(BookingSearchCriteria)returns(Histories);
+}
+
+message BookingSearchCriteria {
+    string payment_mode = 1;
+    string booking_status = 2;
+    bool   cancelled_status = 3;
+    string user_email = 4;
+    string booking_id = 5;
+    string book_date = 6;
+    string start_date = 7;
+    uint32 coordinator_id = 8;
+    int64  page = 9;
+}
+
+message DashBord{
+    int64 wallet = 1;
+    int64 today = 2;
+    int64 monthly = 3;
+    int64 CoordinatorCount = 4;
+    int64 UsersCount = 5;
+}
+
+message TravellerDetails {
+    string name = 1;
+    string age = 2;
+    string gender = 3;
+    repeated string activityId = 4;
+    int64 Id = 5;
+    repeated Activity activity = 6;
+}
+
+message Histories{
+    repeated History history = 1;
+}
+
+message History{
+    int64 Id = 1;
+    string paymentMode = 2;
+    string BookingStatus = 3;
+    string CancelledStatus = 4;
+    int64  TotalPrice = 5;
+    int64  UserId = 6;
+    string bookingId = 7;
+    string BookDate = 8;
+    string StartDate = 9;
+    repeated TravellerDetails travellers = 10;
+    int64 PaidAmount = 11;
+}
+
+message PaymentConfirmedRequest{
+    string email = 1;
+    string ReferenceID = 2;
+    string PaymentId = 3;
+    string UserID = 4;
+    string OrderID = 5;
+    string signature = 6;
+    string total = 7;
+}
+
+message Users{
+    repeated User users = 1;
+}
+
+message User{
+    int64 Id = 1;
+    string name =2;
+    string email = 3;
+    string phone = 4;
+    string password = 5;
+    string role = 6;
 }
 
 message Catagories{

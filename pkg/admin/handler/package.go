@@ -22,10 +22,10 @@ func (a *AdminHandler) AdminViewpackage(ctx context.Context, p *adminpb.AdminVie
 	return rslt, nil
 }
 
-func (a *AdminHandler)AdminPacakgeStatus(ctx context.Context, p *adminpb.AdminView) (*adminpb.AdminResponce, error) {
+func (a *AdminHandler)AdminPacakgeStatus(ctx context.Context, p *adminpb.AdminView) (*adminpb.AdminResponse, error) {
 	rslt, err := a.svc.PackageStatusSVC(p)
 	if err != nil {
-		return &adminpb.AdminResponce{}, err
+		return &adminpb.AdminResponse{}, err
 	}
 	return rslt, nil
 }

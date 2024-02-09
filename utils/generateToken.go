@@ -11,17 +11,19 @@ import (
 type Claims struct {
 	Email string
 	Role  string
+	Token string
 	jwt.StandardClaims
 }
 
 var jwtKey = []byte("SECRETKEY")
 
 func GenerateToken(email, role string) (string, error) {
-	expireTime := time.Now().Add(time.Minute * 20).Unix()
+	expireTime := time.Now().Add(time.Hour * 4).Unix()
 	fmt.Println(email, role)
 	claims := &Claims{
 		Email: email,
 		Role:  role,
+		Token: "Access",
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expireTime,
 			Subject:   email,
@@ -37,4 +39,3 @@ func GenerateToken(email, role string) (string, error) {
 
 	return signedToken, nil
 }
-

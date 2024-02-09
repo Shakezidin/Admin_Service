@@ -26,6 +26,11 @@ const (
 	Coordinator_ViewCatagories_FullMethodName             = "/pb.Coordinator/ViewCatagories"
 	Coordinator_CoordinatorViewDestination_FullMethodName = "/pb.Coordinator/CoordinatorViewDestination"
 	Coordinator_CoordinatorViewActivity_FullMethodName    = "/pb.Coordinator/CoordinatorViewActivity"
+	Coordinator_ViewCoordinators_FullMethodName           = "/pb.Coordinator/ViewCoordinators"
+	Coordinator_ViewHistory_FullMethodName                = "/pb.Coordinator/ViewHistory"
+	Coordinator_ViewBooking_FullMethodName                = "/pb.Coordinator/ViewBooking"
+	Coordinator_ViewDashBord_FullMethodName               = "/pb.Coordinator/ViewDashBord"
+	Coordinator_SearchBooking_FullMethodName              = "/pb.Coordinator/SearchBooking"
 )
 
 // CoordinatorClient is the client API for Coordinator service.
@@ -39,6 +44,11 @@ type CoordinatorClient interface {
 	ViewCatagories(ctx context.Context, in *View, opts ...grpc.CallOption) (*Catagories, error)
 	CoordinatorViewDestination(ctx context.Context, in *View, opts ...grpc.CallOption) (*Destination, error)
 	CoordinatorViewActivity(ctx context.Context, in *View, opts ...grpc.CallOption) (*Activity, error)
+	ViewCoordinators(ctx context.Context, in *View, opts ...grpc.CallOption) (*Users, error)
+	ViewHistory(ctx context.Context, in *View, opts ...grpc.CallOption) (*Histories, error)
+	ViewBooking(ctx context.Context, in *View, opts ...grpc.CallOption) (*History, error)
+	ViewDashBord(ctx context.Context, in *View, opts ...grpc.CallOption) (*DashBord, error)
+	SearchBooking(ctx context.Context, in *BookingSearchCriteria, opts ...grpc.CallOption) (*Histories, error)
 }
 
 type coordinatorClient struct {
@@ -112,6 +122,51 @@ func (c *coordinatorClient) CoordinatorViewActivity(ctx context.Context, in *Vie
 	return out, nil
 }
 
+func (c *coordinatorClient) ViewCoordinators(ctx context.Context, in *View, opts ...grpc.CallOption) (*Users, error) {
+	out := new(Users)
+	err := c.cc.Invoke(ctx, Coordinator_ViewCoordinators_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *coordinatorClient) ViewHistory(ctx context.Context, in *View, opts ...grpc.CallOption) (*Histories, error) {
+	out := new(Histories)
+	err := c.cc.Invoke(ctx, Coordinator_ViewHistory_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *coordinatorClient) ViewBooking(ctx context.Context, in *View, opts ...grpc.CallOption) (*History, error) {
+	out := new(History)
+	err := c.cc.Invoke(ctx, Coordinator_ViewBooking_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *coordinatorClient) ViewDashBord(ctx context.Context, in *View, opts ...grpc.CallOption) (*DashBord, error) {
+	out := new(DashBord)
+	err := c.cc.Invoke(ctx, Coordinator_ViewDashBord_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *coordinatorClient) SearchBooking(ctx context.Context, in *BookingSearchCriteria, opts ...grpc.CallOption) (*Histories, error) {
+	out := new(Histories)
+	err := c.cc.Invoke(ctx, Coordinator_SearchBooking_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CoordinatorServer is the server API for Coordinator service.
 // All implementations must embed UnimplementedCoordinatorServer
 // for forward compatibility
@@ -123,6 +178,11 @@ type CoordinatorServer interface {
 	ViewCatagories(context.Context, *View) (*Catagories, error)
 	CoordinatorViewDestination(context.Context, *View) (*Destination, error)
 	CoordinatorViewActivity(context.Context, *View) (*Activity, error)
+	ViewCoordinators(context.Context, *View) (*Users, error)
+	ViewHistory(context.Context, *View) (*Histories, error)
+	ViewBooking(context.Context, *View) (*History, error)
+	ViewDashBord(context.Context, *View) (*DashBord, error)
+	SearchBooking(context.Context, *BookingSearchCriteria) (*Histories, error)
 	mustEmbedUnimplementedCoordinatorServer()
 }
 
@@ -150,6 +210,21 @@ func (UnimplementedCoordinatorServer) CoordinatorViewDestination(context.Context
 }
 func (UnimplementedCoordinatorServer) CoordinatorViewActivity(context.Context, *View) (*Activity, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CoordinatorViewActivity not implemented")
+}
+func (UnimplementedCoordinatorServer) ViewCoordinators(context.Context, *View) (*Users, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ViewCoordinators not implemented")
+}
+func (UnimplementedCoordinatorServer) ViewHistory(context.Context, *View) (*Histories, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ViewHistory not implemented")
+}
+func (UnimplementedCoordinatorServer) ViewBooking(context.Context, *View) (*History, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ViewBooking not implemented")
+}
+func (UnimplementedCoordinatorServer) ViewDashBord(context.Context, *View) (*DashBord, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ViewDashBord not implemented")
+}
+func (UnimplementedCoordinatorServer) SearchBooking(context.Context, *BookingSearchCriteria) (*Histories, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SearchBooking not implemented")
 }
 func (UnimplementedCoordinatorServer) mustEmbedUnimplementedCoordinatorServer() {}
 
@@ -290,6 +365,96 @@ func _Coordinator_CoordinatorViewActivity_Handler(srv interface{}, ctx context.C
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Coordinator_ViewCoordinators_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(View)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CoordinatorServer).ViewCoordinators(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Coordinator_ViewCoordinators_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CoordinatorServer).ViewCoordinators(ctx, req.(*View))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Coordinator_ViewHistory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(View)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CoordinatorServer).ViewHistory(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Coordinator_ViewHistory_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CoordinatorServer).ViewHistory(ctx, req.(*View))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Coordinator_ViewBooking_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(View)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CoordinatorServer).ViewBooking(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Coordinator_ViewBooking_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CoordinatorServer).ViewBooking(ctx, req.(*View))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Coordinator_ViewDashBord_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(View)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CoordinatorServer).ViewDashBord(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Coordinator_ViewDashBord_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CoordinatorServer).ViewDashBord(ctx, req.(*View))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Coordinator_SearchBooking_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BookingSearchCriteria)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CoordinatorServer).SearchBooking(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Coordinator_SearchBooking_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CoordinatorServer).SearchBooking(ctx, req.(*BookingSearchCriteria))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Coordinator_ServiceDesc is the grpc.ServiceDesc for Coordinator service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -324,6 +489,26 @@ var Coordinator_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CoordinatorViewActivity",
 			Handler:    _Coordinator_CoordinatorViewActivity_Handler,
+		},
+		{
+			MethodName: "ViewCoordinators",
+			Handler:    _Coordinator_ViewCoordinators_Handler,
+		},
+		{
+			MethodName: "ViewHistory",
+			Handler:    _Coordinator_ViewHistory_Handler,
+		},
+		{
+			MethodName: "ViewBooking",
+			Handler:    _Coordinator_ViewBooking_Handler,
+		},
+		{
+			MethodName: "ViewDashBord",
+			Handler:    _Coordinator_ViewDashBord_Handler,
+		},
+		{
+			MethodName: "SearchBooking",
+			Handler:    _Coordinator_SearchBooking_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
