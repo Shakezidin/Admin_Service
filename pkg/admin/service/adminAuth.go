@@ -10,9 +10,8 @@ import (
 	adminpb "github.com/Shakezidin/pkg/admin/pb"
 	inter "github.com/Shakezidin/pkg/admin/repository/interface"
 	interr "github.com/Shakezidin/pkg/admin/service/interface"
-	pb      "github.com/Shakezidin/pkg/admin/userclient/userpb"
+	pb "github.com/Shakezidin/pkg/admin/userclient/userpb"
 	"github.com/Shakezidin/utils"
-	jwt "github.com/Shakezidin/utils"
 )
 
 type AdminService struct {
@@ -31,7 +30,7 @@ func (a *AdminService) LoginService(p *adminpb.AdminLogin) (*adminpb.AdminRespon
 		return nil, errors.New("incorrect password")
 	}
 
-	token, err := jwt.GenerateToken(admin.Email, p.Role)
+	token, err := utils.GenerateToken(admin.Email, p.Role)
 	if err != nil {
 		log.Print("error while generating jwt")
 		return nil, errors.New("error while generating jwt")
@@ -52,8 +51,7 @@ func (a *AdminService) ViewDashboard(p *adminpb.AdminView) (*adminpb.AdminDashbo
 	}
 
 	rslt, errrr := a.userClient.UsersCount(ctx, &pb.UserView{})
-	if errrr!=nil{
-		fmt.Println("heyyyyyyyyyyyy")
+	if errrr != nil {
 		fmt.Println(errrr)
 	}
 	admin, err := a.Repo.FetchAdmin(p.Status)

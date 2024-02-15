@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"fmt"
 	"log"
 	"time"
 
@@ -19,7 +18,6 @@ var jwtKey = []byte("SECRETKEY")
 
 func GenerateToken(email, role string) (string, error) {
 	expireTime := time.Now().Add(time.Hour * 4).Unix()
-	fmt.Println(email, role)
 	claims := &Claims{
 		Email: email,
 		Role:  role,
