@@ -6,17 +6,17 @@ option go_package = ".";
 
 
 service Coordinator {
-    rpc AddCatagory(Category)returns(Responce);
-    rpc AvailablePackages(View) returns (PackagesResponce);
+    rpc AddCategory(Category)returns(Response);
+    rpc AvailablePackages(View) returns (PackagesResponse);
     rpc CoordinatorViewPackage(View)returns(Package);
-    rpc AdminPacakgeStatus(View)returns(Responce);
+    rpc AdminPacakgeStatus(View)returns(Response);
     rpc ViewCatagories(View)returns(Catagories);
     rpc CoordinatorViewDestination(View)returns(Destination);
     rpc CoordinatorViewActivity(View)returns(Activity);
     rpc ViewCoordinators(View)returns(Users);
     rpc ViewHistory(View)returns(Histories);
     rpc ViewBooking(View)returns(History);
-    rpc ViewDashBord(View)returns(DashBord);
+    rpc ViewDashboard(View)returns(DashBord);
     rpc SearchBooking(BookingSearchCriteria)returns(Histories);
 }
 
@@ -94,7 +94,7 @@ message Catagories{
     repeated Category Catagories = 1;
 }
 
-message Responce{
+message Response{
     string status = 1;
     string message = 2;
 }
@@ -109,7 +109,7 @@ message Packages{
 
 }
 
-message PackagesResponce{
+message PackagesResponse{
     repeated Package Packages = 1;
 }
 

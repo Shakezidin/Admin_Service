@@ -17,7 +17,7 @@ func (a *AdminHandler) AdminLoginRequest(ctx context.Context, p *adminpb.AdminLo
 	return admin, nil
 }
 
-func (a *AdminHandler) AdminViewDashBord(ctx context.Context, p *adminpb.AdminView) (*adminpb.AdminDashboard, error) {
+func (a *AdminHandler) AdminViewDashboard(ctx context.Context, p *adminpb.AdminView) (*adminpb.AdminDashboard, error) {
 	dashbord, err := a.svc.ViewDashboard(p)
 	if err != nil {
 		return nil, err

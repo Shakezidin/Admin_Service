@@ -9,10 +9,7 @@ import (
 func (a *AdminHandler) AdminAddCategory(ctx context.Context, p *adminpb.AdminCategory) (*adminpb.AdminResponse, error) {
 	admin, err := a.svc.AddCategory(p)
 	if err != nil {
-		return &adminpb.AdminResponse{
-			Status:  admin.Status,
-			Message: admin.Message,
-		}, err
+	return nil,err
 	}
 	return admin, nil
 }

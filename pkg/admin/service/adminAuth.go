@@ -45,7 +45,7 @@ func (a *AdminService) LoginService(p *adminpb.AdminLogin) (*adminpb.AdminRespon
 
 func (a *AdminService) ViewDashboard(p *adminpb.AdminView) (*adminpb.AdminDashboard, error) {
 	ctx := context.Background()
-	result, err := a.CodClient.ViewDashBord(ctx, &clientpb.View{})
+	result, err := a.CodClient.ViewDashboard(ctx, &clientpb.View{})
 	if err != nil {
 		return nil, err
 	}

@@ -13,7 +13,7 @@ func (a *AdminService) AddCategory(p *adminpb.AdminCategory) (*adminpb.AdminResp
 		CategoryName: p.Category,
 	}
 
-	resp, err := a.CodClient.AddCatagory(ctx, category)
+	resp, err := a.CodClient.AddCategory(ctx, category)
 	if err != nil {
 		return nil, err
 	}
