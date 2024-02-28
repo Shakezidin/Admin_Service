@@ -10,7 +10,7 @@ import (
 func (a *AdminService) AddCategory(p *adminpb.AdminCategory) (*adminpb.AdminResponse, error) {
 	var ctx = context.Background()
 	category := &cpb.Category{
-		CategoryName: p.Category,
+		Category_Name: p.Category,
 	}
 
 	resp, err := a.CodClient.AddCategory(ctx, category)
@@ -34,15 +34,15 @@ func (a *AdminService) ViewCategories(p *adminpb.AdminView) (*adminpb.AdminCateg
 	}
 
 	var categories []*adminpb.AdminCategory
-	for _, ctgry := range resp.Catagories {
+	for _, ctgry := range resp.Categories {
 		category := &adminpb.AdminCategory{
-			Categoryid: ctgry.CatagoryId,
-			Category:   ctgry.CategoryName,
+			Category_ID: ctgry.Category_ID,
+			Category:    ctgry.Category_Name,
 		}
 		categories = append(categories, category)
 	}
 
 	return &adminpb.AdminCategories{
-		Catagory: categories,
+		Categories: categories,
 	}, nil
 }

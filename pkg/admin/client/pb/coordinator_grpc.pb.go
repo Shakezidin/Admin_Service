@@ -41,13 +41,13 @@ type CoordinatorClient interface {
 	AvailablePackages(ctx context.Context, in *View, opts ...grpc.CallOption) (*PackagesResponse, error)
 	CoordinatorViewPackage(ctx context.Context, in *View, opts ...grpc.CallOption) (*Package, error)
 	AdminPacakgeStatus(ctx context.Context, in *View, opts ...grpc.CallOption) (*Response, error)
-	ViewCatagories(ctx context.Context, in *View, opts ...grpc.CallOption) (*Catagories, error)
+	ViewCatagories(ctx context.Context, in *View, opts ...grpc.CallOption) (*Categories, error)
 	CoordinatorViewDestination(ctx context.Context, in *View, opts ...grpc.CallOption) (*Destination, error)
 	CoordinatorViewActivity(ctx context.Context, in *View, opts ...grpc.CallOption) (*Activity, error)
 	ViewCoordinators(ctx context.Context, in *View, opts ...grpc.CallOption) (*Users, error)
 	ViewHistory(ctx context.Context, in *View, opts ...grpc.CallOption) (*Histories, error)
 	ViewBooking(ctx context.Context, in *View, opts ...grpc.CallOption) (*History, error)
-	ViewDashboard(ctx context.Context, in *View, opts ...grpc.CallOption) (*DashBord, error)
+	ViewDashboard(ctx context.Context, in *View, opts ...grpc.CallOption) (*Dashboard, error)
 	SearchBooking(ctx context.Context, in *BookingSearchCriteria, opts ...grpc.CallOption) (*Histories, error)
 }
 
@@ -95,8 +95,8 @@ func (c *coordinatorClient) AdminPacakgeStatus(ctx context.Context, in *View, op
 	return out, nil
 }
 
-func (c *coordinatorClient) ViewCatagories(ctx context.Context, in *View, opts ...grpc.CallOption) (*Catagories, error) {
-	out := new(Catagories)
+func (c *coordinatorClient) ViewCatagories(ctx context.Context, in *View, opts ...grpc.CallOption) (*Categories, error) {
+	out := new(Categories)
 	err := c.cc.Invoke(ctx, Coordinator_ViewCatagories_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -149,8 +149,8 @@ func (c *coordinatorClient) ViewBooking(ctx context.Context, in *View, opts ...g
 	return out, nil
 }
 
-func (c *coordinatorClient) ViewDashboard(ctx context.Context, in *View, opts ...grpc.CallOption) (*DashBord, error) {
-	out := new(DashBord)
+func (c *coordinatorClient) ViewDashboard(ctx context.Context, in *View, opts ...grpc.CallOption) (*Dashboard, error) {
+	out := new(Dashboard)
 	err := c.cc.Invoke(ctx, Coordinator_ViewDashboard_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -175,13 +175,13 @@ type CoordinatorServer interface {
 	AvailablePackages(context.Context, *View) (*PackagesResponse, error)
 	CoordinatorViewPackage(context.Context, *View) (*Package, error)
 	AdminPacakgeStatus(context.Context, *View) (*Response, error)
-	ViewCatagories(context.Context, *View) (*Catagories, error)
+	ViewCatagories(context.Context, *View) (*Categories, error)
 	CoordinatorViewDestination(context.Context, *View) (*Destination, error)
 	CoordinatorViewActivity(context.Context, *View) (*Activity, error)
 	ViewCoordinators(context.Context, *View) (*Users, error)
 	ViewHistory(context.Context, *View) (*Histories, error)
 	ViewBooking(context.Context, *View) (*History, error)
-	ViewDashboard(context.Context, *View) (*DashBord, error)
+	ViewDashboard(context.Context, *View) (*Dashboard, error)
 	SearchBooking(context.Context, *BookingSearchCriteria) (*Histories, error)
 	mustEmbedUnimplementedCoordinatorServer()
 }
@@ -202,7 +202,7 @@ func (UnimplementedCoordinatorServer) CoordinatorViewPackage(context.Context, *V
 func (UnimplementedCoordinatorServer) AdminPacakgeStatus(context.Context, *View) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AdminPacakgeStatus not implemented")
 }
-func (UnimplementedCoordinatorServer) ViewCatagories(context.Context, *View) (*Catagories, error) {
+func (UnimplementedCoordinatorServer) ViewCatagories(context.Context, *View) (*Categories, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ViewCatagories not implemented")
 }
 func (UnimplementedCoordinatorServer) CoordinatorViewDestination(context.Context, *View) (*Destination, error) {
@@ -220,7 +220,7 @@ func (UnimplementedCoordinatorServer) ViewHistory(context.Context, *View) (*Hist
 func (UnimplementedCoordinatorServer) ViewBooking(context.Context, *View) (*History, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ViewBooking not implemented")
 }
-func (UnimplementedCoordinatorServer) ViewDashboard(context.Context, *View) (*DashBord, error) {
+func (UnimplementedCoordinatorServer) ViewDashboard(context.Context, *View) (*Dashboard, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ViewDashboard not implemented")
 }
 func (UnimplementedCoordinatorServer) SearchBooking(context.Context, *BookingSearchCriteria) (*Histories, error) {

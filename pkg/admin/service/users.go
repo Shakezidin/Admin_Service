@@ -12,7 +12,7 @@ func (a *AdminService) ViewUsersSVC(p *adminpb.AdminView) (*adminpb.AdminUsers, 
 
 	var ctx = context.Background()
 	responce, err := a.userClient.UserViewUsers(ctx, &pb.UserView{
-		Id:     p.Id,
+		ID:     p.ID,
 		Status: p.Status,
 		Page:   p.Page,
 	})
@@ -23,7 +23,7 @@ func (a *AdminService) ViewUsersSVC(p *adminpb.AdminView) (*adminpb.AdminUsers, 
 	var users []*adminpb.AdminUser
 	for _, user := range responce.Users {
 		users = append(users, &adminpb.AdminUser{
-			Id:       user.Id,
+			ID:       user.ID,
 			Name:     user.Name,
 			Email:    user.Email,
 			Phone:    user.Phone,
@@ -39,7 +39,7 @@ func (a *AdminService) ViewUsersSVC(p *adminpb.AdminView) (*adminpb.AdminUsers, 
 func (a *AdminService) ViewUserSVC(p *adminpb.AdminView) (*adminpb.AdminUser, error) {
 	var ctx = context.Background()
 	responce, err := a.userClient.UserViewUser(ctx, &pb.UserView{
-		Id:     p.Id,
+		ID:     p.ID,
 		Status: p.Status,
 		Page:   p.Page,
 	})
@@ -48,7 +48,7 @@ func (a *AdminService) ViewUserSVC(p *adminpb.AdminView) (*adminpb.AdminUser, er
 	}
 
 	return &adminpb.AdminUser{
-		Id:    responce.Id,
+		ID:    responce.ID,
 		Name:  responce.Name,
 		Email: responce.Email,
 		Phone: responce.Phone,

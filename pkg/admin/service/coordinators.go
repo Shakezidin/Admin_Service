@@ -20,7 +20,7 @@ func (a *AdminService) ViewCoordinators(p *adminpb.AdminView) (*adminpb.AdminUse
 	var coordinators []*adminpb.AdminUser
 	for _, coordinator := range response.Users {
 		coordinators = append(coordinators, &adminpb.AdminUser{
-			Id:       coordinator.Id,
+			ID:       coordinator.ID,
 			Name:     coordinator.Name,
 			Email:    coordinator.Email,
 			Phone:    coordinator.Phone,

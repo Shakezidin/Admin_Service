@@ -59,11 +59,11 @@ func (a *AdminService) ViewDashboard(p *adminpb.AdminView) (*adminpb.AdminDashbo
 		return nil, errors.New("error while fetching admin")
 	}
 	return &adminpb.AdminDashboard{
-		Wallet:           int64(admin.Wallet),
-		Today:            result.Today,
-		Monthly:          result.Monthly,
-		CoordinatorCount: result.CoordinatorCount,
-		UsersCount:       rslt.Usercount,
+		Wallet:            int64(admin.Wallet),
+		Today:             result.Today,
+		Monthly:           result.Monthly,
+		Coordinator_Count: result.Coordinator_Count,
+		Users_Count:       rslt.User_Count,
 	}, nil
 }
 

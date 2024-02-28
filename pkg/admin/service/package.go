@@ -20,19 +20,19 @@ func (a *AdminService) ViewPackagesSVC(p *adminpb.AdminView) (*adminpb.AdminPack
 	var packages []*adminpb.AdminPackage
 	for _, pack := range result.Packages {
 		pkg := &adminpb.AdminPackage{
-			PackageId:        pack.PackageId,
-			Destination:      pack.Destination,
-			DestinationCount: int64(pack.DestinationCount),
-			Enddate:          pack.Enddate,
-			Image:            pack.Image,
-			Packagename:      pack.Packagename,
-			AvailableSpace:   pack.AvailableSpace,
-			Price:            int64(pack.Price),
-			Startdate:        pack.Startdate,
-			Starttime:        pack.Starttime,
-			Startlocation:    pack.Startlocation,
-			Description:      pack.Description,
-			CoorinatorId:     pack.CoorinatorId,
+			Package_ID:        pack.Package_ID,
+			Destination:       pack.Destination,
+			Destination_Count: int64(pack.Destination_Count),
+			End_Date:          pack.End_Date,
+			Image:             pack.Image,
+			Packagename:       pack.Packagename,
+			Available_Space:   pack.Available_Space,
+			Price:             int64(pack.Price),
+			Start_Date:        pack.Start_Date,
+			Start_Time:        pack.Start_Time,
+			Start_Location:    pack.Start_Location,
+			Description:       pack.Description,
+			Coordinator_ID:    pack.Coordinator_ID,
 		}
 		packages = append(packages, pkg)
 	}
@@ -43,7 +43,7 @@ func (a *AdminService) ViewPackagesSVC(p *adminpb.AdminView) (*adminpb.AdminPack
 func (a *AdminService) ViewPackageSVC(p *adminpb.AdminView) (*adminpb.AdminPackage, error) {
 	var ctx = context.Background()
 	result, err := a.CodClient.CoordinatorViewPackage(ctx, &cpb.View{
-		Id: p.Id,
+		ID: p.ID,
 	})
 	if err != nil {
 		return nil, err
@@ -52,41 +52,41 @@ func (a *AdminService) ViewPackageSVC(p *adminpb.AdminView) (*adminpb.AdminPacka
 	var destinations []*adminpb.AdminDestination
 	for _, dst := range result.Destinations {
 		dest := &adminpb.AdminDestination{
-			Description:     dst.Description,
-			DestinationName: dst.DestinationName,
-			Image:           dst.Image,
-			DestinationId:   dst.DestinationId,
+			Description:      dst.Description,
+			Destination_Name: dst.Destination_Name,
+			Image:            dst.Image,
+			Destination_ID:   dst.Destination_ID,
 		}
 		destinations = append(destinations, dest)
 	}
 
 	category := &adminpb.AdminCategory{
-		Category: result.Category.CategoryName,
+		Category: result.Category.Category_Name,
 	}
 
 	return &adminpb.AdminPackage{
-		Category:         category,
-		PackageId:        result.PackageId,
-		Destination:      result.Destination,
-		DestinationCount: int64(result.DestinationCount),
-		Enddate:          result.Enddate,
-		Image:            result.Image,
-		Packagename:      result.Packagename,
-		AvailableSpace:   result.AvailableSpace,
-		Price:            int64(result.Price),
-		Startdate:        result.Startdate,
-		Starttime:        result.Starttime,
-		Startlocation:    result.Startlocation,
-		Description:      result.Description,
-		MaxCapacity:      result.MaxCapacity,
-		Destinations:     destinations,
+		Category:          category,
+		Package_ID:        result.Package_ID,
+		Destination:       result.Destination,
+		Destination_Count: int64(result.Destination_Count),
+		End_Date:          result.End_Date,
+		Image:             result.Image,
+		Packagename:       result.Packagename,
+		Available_Space:   result.Available_Space,
+		Price:             int64(result.Price),
+		Start_Date:        result.Start_Date,
+		Start_Time:        result.Start_Time,
+		Start_Location:    result.Start_Location,
+		Description:       result.Description,
+		Max_Capacity:      result.Max_Capacity,
+		Destinations:      destinations,
 	}, nil
 }
 
 func (a *AdminService) PackageStatusSVC(p *adminpb.AdminView) (*adminpb.AdminResponse, error) {
 	var ctx = context.Background()
 	result, err := a.CodClient.AdminPacakgeStatus(ctx, &cpb.View{
-		Id: p.Id,
+		ID: p.ID,
 	})
 	if err != nil {
 		return nil, err

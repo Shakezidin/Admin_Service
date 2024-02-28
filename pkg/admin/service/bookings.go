@@ -10,7 +10,7 @@ import (
 func (a *AdminService) ViewBookings(p *adminpb.AdminView) (*adminpb.AdminHistories, error) {
 	var ctx = context.Background()
 	result, err := a.CodClient.ViewHistory(ctx, &clientpb.View{
-		Id:     p.Id,
+		ID:     p.ID,
 		Status: p.Status,
 	})
 	if err != nil {
@@ -21,16 +21,16 @@ func (a *AdminService) ViewBookings(p *adminpb.AdminView) (*adminpb.AdminHistori
 	if result != nil && result.History != nil {
 		for _, hstry := range result.History {
 			history = append(history, &adminpb.AdminHistory{
-				Id:              hstry.Id,
-				PaymentMode:     hstry.PaymentMode,
-				BookingStatus:   hstry.BookingStatus,
-				CancelledStatus: hstry.CancelledStatus,
-				TotalPrice:      hstry.TotalPrice,
-				UserId:          hstry.UserId,
-				BookingId:       hstry.BookingId,
-				BookDate:        hstry.BookDate,
-				StartDate:       hstry.StartDate,
-				PaidAmount:      hstry.PaidAmount,
+				ID:               hstry.ID,
+				Payment_Mode:     hstry.Payment_Mode,
+				Booking_Status:   hstry.Booking_Status,
+				Cancelled_Status: hstry.Cancelled_Status,
+				Total_Price:      hstry.Total_Price,
+				User_ID:          hstry.User_ID,
+				Booking_ID:       hstry.Booking_ID,
+				Book_Date:        hstry.Book_Date,
+				Start_Date:       hstry.Start_Date,
+				Paid_Amount:      hstry.Paid_Amount,
 			})
 		}
 	}
@@ -43,7 +43,7 @@ func (a *AdminService) ViewBookings(p *adminpb.AdminView) (*adminpb.AdminHistori
 func (a *AdminService) ViewBooking(p *adminpb.AdminView) (*adminpb.AdminHistory, error) {
 	var ctx = context.Background()
 	booking, err := a.CodClient.ViewBooking(ctx, &clientpb.View{
-		Id: p.Id,
+		ID: p.ID,
 	})
 	if err != nil {
 		return nil, err
@@ -53,7 +53,7 @@ func (a *AdminService) ViewBooking(p *adminpb.AdminView) (*adminpb.AdminHistory,
 	if booking != nil && booking.Travellers != nil {
 		for _, trvler := range booking.Travellers {
 			traveller = append(traveller, &adminpb.AdminTravellerDetails{
-				Id:     int64(trvler.Id),
+				ID:     int64(trvler.ID),
 				Name:   trvler.Name,
 				Age:    trvler.Age,
 				Gender: trvler.Gender,
@@ -62,32 +62,32 @@ func (a *AdminService) ViewBooking(p *adminpb.AdminView) (*adminpb.AdminHistory,
 	}
 
 	return &adminpb.AdminHistory{
-		Id:              int64(booking.Id),
-		PaymentMode:     booking.PaymentMode,
-		BookingStatus:   booking.BookingStatus,
-		CancelledStatus: booking.CancelledStatus,
-		TotalPrice:      int64(booking.TotalPrice),
-		UserId:          int64(booking.UserId),
-		BookingId:       booking.BookingId,
-		BookDate:        booking.BookDate,
-		StartDate:       booking.StartDate,
-		Travellers:      traveller,
-		PaidAmount:      int64(booking.PaidAmount),
+		ID:               int64(booking.ID),
+		Payment_Mode:     booking.Payment_Mode,
+		Booking_Status:   booking.Booking_Status,
+		Cancelled_Status: booking.Cancelled_Status,
+		Total_Price:      int64(booking.Total_Price),
+		User_ID:          int64(booking.User_ID),
+		Booking_ID:       booking.Booking_ID,
+		Book_Date:        booking.Book_Date,
+		Start_Date:       booking.Start_Date,
+		Travellers:       traveller,
+		Paid_Amount:      int64(booking.Paid_Amount),
 	}, nil
 }
 
 func (c *AdminService) SearchBooking(p *adminpb.AdminBookingSearchCriteria) (*adminpb.AdminHistories, error) {
 	var ctx = context.Background()
 	booking, err := c.CodClient.SearchBooking(ctx, &clientpb.BookingSearchCriteria{
-		PaymentMode:     p.PaymentMode,
-		BookingStatus:   p.BookingStatus,
-		CancelledStatus: p.CancelledStatus,
-		UserEmail:       p.UserEmail,
-		BookingId:       p.BookingId,
-		BookDate:        p.BookDate,
-		StartDate:       p.StartDate,
-		CoordinatorId:   p.CoordinatorId,
-		Page:            p.Page,
+		Payment_Mode:     p.Payment_Mode,
+		Booking_Status:   p.Booking_Status,
+		Cancelled_Status: p.Cancelled_Status,
+		User_Email:       p.User_Email,
+		Booking_ID:       p.Booking_ID,
+		Book_Date:        p.Book_Date,
+		Start_Date:       p.Start_Date,
+		Coordinator_ID:   p.Coordinator_ID,
+		Page:             p.Page,
 	})
 	if err != nil {
 		return nil, err
@@ -97,16 +97,16 @@ func (c *AdminService) SearchBooking(p *adminpb.AdminBookingSearchCriteria) (*ad
 	if booking != nil && booking.History != nil {
 		for _, hstry := range booking.History {
 			history = append(history, &adminpb.AdminHistory{
-				Id:              hstry.Id,
-				PaymentMode:     hstry.PaymentMode,
-				BookingStatus:   hstry.BookingStatus,
-				CancelledStatus: hstry.CancelledStatus,
-				TotalPrice:      hstry.TotalPrice,
-				UserId:          hstry.UserId,
-				BookingId:       hstry.BookingId,
-				BookDate:        hstry.BookDate,
-				StartDate:       hstry.StartDate,
-				PaidAmount:      hstry.PaidAmount,
+				ID:               hstry.ID,
+				Payment_Mode:     hstry.Payment_Mode,
+				Booking_Status:   hstry.Booking_Status,
+				Cancelled_Status: hstry.Cancelled_Status,
+				Total_Price:      hstry.Total_Price,
+				User_ID:          hstry.User_ID,
+				Booking_ID:       hstry.Booking_ID,
+				Book_Date:        hstry.Book_Date,
+				Start_Date:       hstry.Start_Date,
+				Paid_Amount:      hstry.Paid_Amount,
 			})
 		}
 	}
