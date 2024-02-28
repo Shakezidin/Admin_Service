@@ -6,80 +6,157 @@ option go_package = ".";
 
 
 service Coordinator {
-    rpc AddCatagory(Category)returns(Responce);
-    rpc AvailablePackages(View) returns (PackagesResponce);
+    rpc AddCategory(Category)returns(Response);
+    rpc AvailablePackages(View) returns (PackagesResponse);
     rpc CoordinatorViewPackage(View)returns(Package);
-    rpc AdminPacakgeStatus(View)returns(Responce);
-    rpc ViewCatagories(View)returns(Catagories);
+    rpc AdminPacakgeStatus(View)returns(Response);
+    rpc ViewCatagories(View)returns(Categories);
     rpc CoordinatorViewDestination(View)returns(Destination);
     rpc CoordinatorViewActivity(View)returns(Activity);
+    rpc ViewCoordinators(View)returns(Users);
+    rpc ViewHistory(View)returns(Histories);
+    rpc ViewBooking(View)returns(History);
+    rpc ViewDashboard(View)returns(Dashboard);
+    rpc SearchBooking(BookingSearchCriteria)returns(Histories);
 }
 
-message Catagories{
-    repeated Category Catagories = 1;
-}
-message Responce{
-    string status = 1;
-    string message = 2;
-}
 
-message View{
-    int64 Id = 1;
-    string status = 2;
-    int64 page = 3;
-}
-
-message Packages{
-
+message BookingSearchCriteria {
+    string Payment_Mode = 1;
+    string Booking_Status = 2;
+    bool Cancelled_Status = 3;
+    string User_Email = 4;
+    string Booking_ID = 5;
+    string Book_Date = 6;
+    string Start_Date = 7;
+    uint32 Coordinator_ID = 8;
+    int64 Page = 9;
 }
 
-message PackagesResponce{
+message Dashboard {
+    int64 Wallet = 1;
+    int64 Today = 2;
+    int64 Monthly = 3;
+    int64 Coordinator_Count = 4;
+    int64 Users_Count = 5;
+}
+
+message TravellerDetails {
+    string Name = 1;
+    string Age = 2;
+    string Gender = 3;
+    repeated string Activity_ID = 4;
+    int64 ID = 5;
+    repeated Activity Activity = 6;
+}
+
+message Histories {
+    repeated History History = 1;
+}
+
+message History {
+    int64 ID = 1;
+    string Payment_Mode = 2;
+    string Booking_Status = 3;
+    string Cancelled_Status = 4;
+    int64 Total_Price = 5;
+    int64 User_ID = 6;
+    string Booking_ID = 7;
+    string Book_Date = 8;
+    string Start_Date = 9;
+    repeated TravellerDetails Travellers = 10;
+    int64 Paid_Amount = 11;
+}
+
+message PaymentConfirmedRequest {
+    string Email = 1;
+    string Reference_ID = 2;
+    string Payment_ID = 3;
+    string User_ID = 4;
+    string Order_ID = 5;
+    string Signature = 6;
+    string Total = 7;
+}
+
+message Users {
+    repeated User Users = 1;
+}
+
+message User {
+    int64 ID = 1;
+    string Name = 2;
+    string Email = 3;
+    string Phone = 4;
+    string Password = 5;
+    string Role = 6;
+}
+
+message Categories {
+    repeated Category Categories = 1;
+}
+
+message Response {
+    string Status = 1;
+    string Message = 2;
+}
+
+message View {
+    int64 ID = 1;
+    string Status = 2;
+    int64 Page = 3;
+}
+
+message Packages {
+}
+
+message PackagesResponse {
     repeated Package Packages = 1;
 }
 
-message Category{
-    int64 CatagoryId = 1;
-    string categoryName = 2;
+message Category {
+    int64 Category_ID = 1;
+    string Category_Name = 2;
 }
 
-message Package{
-    int64  PackageId = 1;
-    string packagename = 2;
-    int64  CoorinatorId = 3;
-    string startlocation = 4;
-    int64  availableSpace = 5;
-    string startdate = 6;
-    string enddate = 7;
-    int64  price = 8;
-    string image = 9;
-    int64  destinationCount = 10;
-    string destination = 11;
-    string Description = 12;
-    int64  maxCapacity = 13;
-    int64  categoryId = 14;  
-    Category category = 15;
-    repeated Destination Destinations = 16;
+message Package {
+    int64 Package_ID = 1;
+    string Packagename = 2;
+    int64 Coordinator_ID = 3;
+    string Start_Location = 4;
+    int64 Available_Space = 5;
+    string Start_Date = 6;
+    string Start_Time = 7;
+    string End_Date = 8;
+    int64 Price = 9;
+    string Image = 10;
+    int64 Destination_Count = 11;
+    string Destination = 12;
+    string Description = 13;
+    int64 Max_Capacity = 14;
+    int64 Category_ID = 15;  
+    Category Category = 16;
+    repeated Destination Destinations = 17;
 }
 
-message Destination{
-    int64 destinationId = 1;
-    string DestinationName = 2;
+message Destination {
+    int64 Destination_ID = 1;
+    string Destination_Name = 2;
     string Description = 3;
-    int64 minprice = 4;
-    int64 maxCapacity = 5;
-    string image = 6;
-    repeated Activity activity = 7;
-    int64 PackageID = 8;
+    int64 Min_Price = 4;
+    int64 Max_Capacity = 5;
+    string Image = 6;
+    repeated Activity Activity = 7;
+    int64 Package_ID = 8;
 }
 
-message Activity{
-    int64 activityId = 1;
-    string activityname = 2;
-    string description = 3;
+message Activity {
+    int64 Activity_ID = 1;
+    string Activity_Name = 2;
+    string Description = 3;
     string Location = 4;
-    string ActivityType = 5;
+    string Activity_Type = 5;
     int64 Amount = 6;
-    string date = 7;
-    string time = 8;
-    int64 destinationId = 9;
+    string Date = 7;
+    string Time = 8;
+    int64 Destination_ID = 9;
 }

@@ -1,34 +1,44 @@
 package config
 
 import (
-	"log"
+	"os"
 
-	"github.com/spf13/viper"
+	"github.com/joho/godotenv"
 )
 
 type Config struct {
-	Host                string `mapstructure:"HOST"`
-	User                string `mapstructure:"USER"`
-	Password            string `mapstructure:"PASSWORD"`
-	Database            string `mapstructure:"DATABASE"`
-	Port                string `mapstructure:"PORT"`
-	Sslmode             string `mapstructure:"SSLMODE"`
-	GRPCADMINPORT       string `mapstructure:"GRPCADMINPORT"`
-	SID                 string `mapstructure:"SID"`
-	TOKEN               string `mapstructure:"TOKEN"`
-	SERVICETOKEN        string `mapstructure:"SERVICETOKEN"`
-	COORDINATORAPORT  	string `mapstructure:"COORDINATORAPORT"`
+	Host             string
+	User             string
+	Password         string
+	Database         string
+	Port             string
+	Sslmode          string
+	GRPCADMINPORT    string
+	SID              string
+	TOKEN            string
+	SERVICETOKEN     string
+	COORDINATORAPORT string
+	USERPORT         string
 }
 
 func LoadConfig() *Config {
-	var config Config
-	viper.SetConfigFile("../../.env")
-	err := viper.ReadInConfig()
-	err = viper.Unmarshal(&config)
+	godotenv.Load("../../.env")
 
-	if err != nil {
-		log.Fatal("Error while loading configure")
-	}
+	var config Config
+
+	// Use os.Getenv to retrieve environment variables
+	config.Host = os.Getenv("HOST")
+	config.User = os.Getenv("USER")
+	config.Password = os.Getenv("PASSWORD")
+	config.Database = os.Getenv("DATABASE")
+	config.Port = os.Getenv("PORT")
+	config.Sslmode = os.Getenv("SSLMODE")
+	config.GRPCADMINPORT = os.Getenv("GRPCADMINPORT")
+	config.SID = os.Getenv("SID")
+	config.TOKEN = os.Getenv("TOKEN")
+	config.SERVICETOKEN = os.Getenv("SERVICETOKEN")
+	config.COORDINATORAPORT = os.Getenv("COORDINATORAPORT")
+	config.USERPORT = os.Getenv("USERPORT")
 
 	return &config
 }

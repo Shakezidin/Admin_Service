@@ -7,41 +7,42 @@ import (
 	adminpb "github.com/Shakezidin/pkg/admin/pb"
 )
 
-func (a *AdminService) AddCategory(p *adminpb.AdminCategory) (*adminpb.AdminResponce, error) {
+func (a *AdminService) AddCategory(p *adminpb.AdminCategory) (*adminpb.AdminResponse, error) {
 	var ctx = context.Background()
-	var catogory = cpb.Category{
-		CategoryName: p.Category,
-	}
-	resp, err := a.codClient.AddCatagory(ctx, &catogory)
-	if err != nil {
-		return &adminpb.AdminResponce{
-			Status:  resp.Status,
-			Message: resp.Message,
-		}, err
+	category := &cpb.Category{
+		Category_Name: p.Category,
 	}
 
-	return &adminpb.AdminResponce{
+	resp, err := a.CodClient.AddCategory(ctx, category)
+	if err != nil {
+		return nil, err
+	}
+
+	return &adminpb.AdminResponse{
 		Status:  resp.Status,
 		Message: resp.Message,
 	}, nil
 }
 
-func (a *AdminService) ViewCategories(p *adminpb.AdminView) (*adminpb.AdminCatagories, error) {
+func (a *AdminService) ViewCategories(p *adminpb.AdminView) (*adminpb.AdminCategories, error) {
 	var ctx = context.Background()
-	resp, err := a.codClient.ViewCatagories(ctx, &cpb.View{
+	resp, err := a.CodClient.ViewCatagories(ctx, &cpb.View{
 		Page: p.Page,
 	})
 	if err != nil {
-		return &adminpb.AdminCatagories{}, err
+		return nil, err
 	}
-	var catagories []*adminpb.AdminCategory
-	for _, ctgry := range resp.Catagories {
-		var catagory adminpb.AdminCategory
-		catagory.Categoryid = ctgry.CatagoryId
-		catagory.Category = ctgry.CategoryName
-		catagories = append(catagories, &catagory)
+
+	var categories []*adminpb.AdminCategory
+	for _, ctgry := range resp.Categories {
+		category := &adminpb.AdminCategory{
+			Category_ID: ctgry.Category_ID,
+			Category:    ctgry.Category_Name,
+		}
+		categories = append(categories, category)
 	}
-	return &adminpb.AdminCatagories{
-		Catagory: catagories,
+
+	return &adminpb.AdminCategories{
+		Categories: categories,
 	}, nil
 }

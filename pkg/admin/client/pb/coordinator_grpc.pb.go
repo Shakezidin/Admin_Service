@@ -19,26 +19,36 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Coordinator_AddCatagory_FullMethodName                = "/pb.Coordinator/AddCatagory"
+	Coordinator_AddCategory_FullMethodName                = "/pb.Coordinator/AddCategory"
 	Coordinator_AvailablePackages_FullMethodName          = "/pb.Coordinator/AvailablePackages"
 	Coordinator_CoordinatorViewPackage_FullMethodName     = "/pb.Coordinator/CoordinatorViewPackage"
 	Coordinator_AdminPacakgeStatus_FullMethodName         = "/pb.Coordinator/AdminPacakgeStatus"
 	Coordinator_ViewCatagories_FullMethodName             = "/pb.Coordinator/ViewCatagories"
 	Coordinator_CoordinatorViewDestination_FullMethodName = "/pb.Coordinator/CoordinatorViewDestination"
 	Coordinator_CoordinatorViewActivity_FullMethodName    = "/pb.Coordinator/CoordinatorViewActivity"
+	Coordinator_ViewCoordinators_FullMethodName           = "/pb.Coordinator/ViewCoordinators"
+	Coordinator_ViewHistory_FullMethodName                = "/pb.Coordinator/ViewHistory"
+	Coordinator_ViewBooking_FullMethodName                = "/pb.Coordinator/ViewBooking"
+	Coordinator_ViewDashboard_FullMethodName              = "/pb.Coordinator/ViewDashboard"
+	Coordinator_SearchBooking_FullMethodName              = "/pb.Coordinator/SearchBooking"
 )
 
 // CoordinatorClient is the client API for Coordinator service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CoordinatorClient interface {
-	AddCatagory(ctx context.Context, in *Category, opts ...grpc.CallOption) (*Responce, error)
-	AvailablePackages(ctx context.Context, in *View, opts ...grpc.CallOption) (*PackagesResponce, error)
+	AddCategory(ctx context.Context, in *Category, opts ...grpc.CallOption) (*Response, error)
+	AvailablePackages(ctx context.Context, in *View, opts ...grpc.CallOption) (*PackagesResponse, error)
 	CoordinatorViewPackage(ctx context.Context, in *View, opts ...grpc.CallOption) (*Package, error)
-	AdminPacakgeStatus(ctx context.Context, in *View, opts ...grpc.CallOption) (*Responce, error)
-	ViewCatagories(ctx context.Context, in *View, opts ...grpc.CallOption) (*Catagories, error)
+	AdminPacakgeStatus(ctx context.Context, in *View, opts ...grpc.CallOption) (*Response, error)
+	ViewCatagories(ctx context.Context, in *View, opts ...grpc.CallOption) (*Categories, error)
 	CoordinatorViewDestination(ctx context.Context, in *View, opts ...grpc.CallOption) (*Destination, error)
 	CoordinatorViewActivity(ctx context.Context, in *View, opts ...grpc.CallOption) (*Activity, error)
+	ViewCoordinators(ctx context.Context, in *View, opts ...grpc.CallOption) (*Users, error)
+	ViewHistory(ctx context.Context, in *View, opts ...grpc.CallOption) (*Histories, error)
+	ViewBooking(ctx context.Context, in *View, opts ...grpc.CallOption) (*History, error)
+	ViewDashboard(ctx context.Context, in *View, opts ...grpc.CallOption) (*Dashboard, error)
+	SearchBooking(ctx context.Context, in *BookingSearchCriteria, opts ...grpc.CallOption) (*Histories, error)
 }
 
 type coordinatorClient struct {
@@ -49,17 +59,17 @@ func NewCoordinatorClient(cc grpc.ClientConnInterface) CoordinatorClient {
 	return &coordinatorClient{cc}
 }
 
-func (c *coordinatorClient) AddCatagory(ctx context.Context, in *Category, opts ...grpc.CallOption) (*Responce, error) {
-	out := new(Responce)
-	err := c.cc.Invoke(ctx, Coordinator_AddCatagory_FullMethodName, in, out, opts...)
+func (c *coordinatorClient) AddCategory(ctx context.Context, in *Category, opts ...grpc.CallOption) (*Response, error) {
+	out := new(Response)
+	err := c.cc.Invoke(ctx, Coordinator_AddCategory_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *coordinatorClient) AvailablePackages(ctx context.Context, in *View, opts ...grpc.CallOption) (*PackagesResponce, error) {
-	out := new(PackagesResponce)
+func (c *coordinatorClient) AvailablePackages(ctx context.Context, in *View, opts ...grpc.CallOption) (*PackagesResponse, error) {
+	out := new(PackagesResponse)
 	err := c.cc.Invoke(ctx, Coordinator_AvailablePackages_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -76,8 +86,8 @@ func (c *coordinatorClient) CoordinatorViewPackage(ctx context.Context, in *View
 	return out, nil
 }
 
-func (c *coordinatorClient) AdminPacakgeStatus(ctx context.Context, in *View, opts ...grpc.CallOption) (*Responce, error) {
-	out := new(Responce)
+func (c *coordinatorClient) AdminPacakgeStatus(ctx context.Context, in *View, opts ...grpc.CallOption) (*Response, error) {
+	out := new(Response)
 	err := c.cc.Invoke(ctx, Coordinator_AdminPacakgeStatus_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -85,8 +95,8 @@ func (c *coordinatorClient) AdminPacakgeStatus(ctx context.Context, in *View, op
 	return out, nil
 }
 
-func (c *coordinatorClient) ViewCatagories(ctx context.Context, in *View, opts ...grpc.CallOption) (*Catagories, error) {
-	out := new(Catagories)
+func (c *coordinatorClient) ViewCatagories(ctx context.Context, in *View, opts ...grpc.CallOption) (*Categories, error) {
+	out := new(Categories)
 	err := c.cc.Invoke(ctx, Coordinator_ViewCatagories_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -112,17 +122,67 @@ func (c *coordinatorClient) CoordinatorViewActivity(ctx context.Context, in *Vie
 	return out, nil
 }
 
+func (c *coordinatorClient) ViewCoordinators(ctx context.Context, in *View, opts ...grpc.CallOption) (*Users, error) {
+	out := new(Users)
+	err := c.cc.Invoke(ctx, Coordinator_ViewCoordinators_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *coordinatorClient) ViewHistory(ctx context.Context, in *View, opts ...grpc.CallOption) (*Histories, error) {
+	out := new(Histories)
+	err := c.cc.Invoke(ctx, Coordinator_ViewHistory_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *coordinatorClient) ViewBooking(ctx context.Context, in *View, opts ...grpc.CallOption) (*History, error) {
+	out := new(History)
+	err := c.cc.Invoke(ctx, Coordinator_ViewBooking_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *coordinatorClient) ViewDashboard(ctx context.Context, in *View, opts ...grpc.CallOption) (*Dashboard, error) {
+	out := new(Dashboard)
+	err := c.cc.Invoke(ctx, Coordinator_ViewDashboard_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *coordinatorClient) SearchBooking(ctx context.Context, in *BookingSearchCriteria, opts ...grpc.CallOption) (*Histories, error) {
+	out := new(Histories)
+	err := c.cc.Invoke(ctx, Coordinator_SearchBooking_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CoordinatorServer is the server API for Coordinator service.
 // All implementations must embed UnimplementedCoordinatorServer
 // for forward compatibility
 type CoordinatorServer interface {
-	AddCatagory(context.Context, *Category) (*Responce, error)
-	AvailablePackages(context.Context, *View) (*PackagesResponce, error)
+	AddCategory(context.Context, *Category) (*Response, error)
+	AvailablePackages(context.Context, *View) (*PackagesResponse, error)
 	CoordinatorViewPackage(context.Context, *View) (*Package, error)
-	AdminPacakgeStatus(context.Context, *View) (*Responce, error)
-	ViewCatagories(context.Context, *View) (*Catagories, error)
+	AdminPacakgeStatus(context.Context, *View) (*Response, error)
+	ViewCatagories(context.Context, *View) (*Categories, error)
 	CoordinatorViewDestination(context.Context, *View) (*Destination, error)
 	CoordinatorViewActivity(context.Context, *View) (*Activity, error)
+	ViewCoordinators(context.Context, *View) (*Users, error)
+	ViewHistory(context.Context, *View) (*Histories, error)
+	ViewBooking(context.Context, *View) (*History, error)
+	ViewDashboard(context.Context, *View) (*Dashboard, error)
+	SearchBooking(context.Context, *BookingSearchCriteria) (*Histories, error)
 	mustEmbedUnimplementedCoordinatorServer()
 }
 
@@ -130,19 +190,19 @@ type CoordinatorServer interface {
 type UnimplementedCoordinatorServer struct {
 }
 
-func (UnimplementedCoordinatorServer) AddCatagory(context.Context, *Category) (*Responce, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method AddCatagory not implemented")
+func (UnimplementedCoordinatorServer) AddCategory(context.Context, *Category) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddCategory not implemented")
 }
-func (UnimplementedCoordinatorServer) AvailablePackages(context.Context, *View) (*PackagesResponce, error) {
+func (UnimplementedCoordinatorServer) AvailablePackages(context.Context, *View) (*PackagesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AvailablePackages not implemented")
 }
 func (UnimplementedCoordinatorServer) CoordinatorViewPackage(context.Context, *View) (*Package, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CoordinatorViewPackage not implemented")
 }
-func (UnimplementedCoordinatorServer) AdminPacakgeStatus(context.Context, *View) (*Responce, error) {
+func (UnimplementedCoordinatorServer) AdminPacakgeStatus(context.Context, *View) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AdminPacakgeStatus not implemented")
 }
-func (UnimplementedCoordinatorServer) ViewCatagories(context.Context, *View) (*Catagories, error) {
+func (UnimplementedCoordinatorServer) ViewCatagories(context.Context, *View) (*Categories, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ViewCatagories not implemented")
 }
 func (UnimplementedCoordinatorServer) CoordinatorViewDestination(context.Context, *View) (*Destination, error) {
@@ -150,6 +210,21 @@ func (UnimplementedCoordinatorServer) CoordinatorViewDestination(context.Context
 }
 func (UnimplementedCoordinatorServer) CoordinatorViewActivity(context.Context, *View) (*Activity, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CoordinatorViewActivity not implemented")
+}
+func (UnimplementedCoordinatorServer) ViewCoordinators(context.Context, *View) (*Users, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ViewCoordinators not implemented")
+}
+func (UnimplementedCoordinatorServer) ViewHistory(context.Context, *View) (*Histories, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ViewHistory not implemented")
+}
+func (UnimplementedCoordinatorServer) ViewBooking(context.Context, *View) (*History, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ViewBooking not implemented")
+}
+func (UnimplementedCoordinatorServer) ViewDashboard(context.Context, *View) (*Dashboard, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ViewDashboard not implemented")
+}
+func (UnimplementedCoordinatorServer) SearchBooking(context.Context, *BookingSearchCriteria) (*Histories, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SearchBooking not implemented")
 }
 func (UnimplementedCoordinatorServer) mustEmbedUnimplementedCoordinatorServer() {}
 
@@ -164,20 +239,20 @@ func RegisterCoordinatorServer(s grpc.ServiceRegistrar, srv CoordinatorServer) {
 	s.RegisterService(&Coordinator_ServiceDesc, srv)
 }
 
-func _Coordinator_AddCatagory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Coordinator_AddCategory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Category)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CoordinatorServer).AddCatagory(ctx, in)
+		return srv.(CoordinatorServer).AddCategory(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Coordinator_AddCatagory_FullMethodName,
+		FullMethod: Coordinator_AddCategory_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CoordinatorServer).AddCatagory(ctx, req.(*Category))
+		return srv.(CoordinatorServer).AddCategory(ctx, req.(*Category))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -290,6 +365,96 @@ func _Coordinator_CoordinatorViewActivity_Handler(srv interface{}, ctx context.C
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Coordinator_ViewCoordinators_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(View)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CoordinatorServer).ViewCoordinators(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Coordinator_ViewCoordinators_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CoordinatorServer).ViewCoordinators(ctx, req.(*View))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Coordinator_ViewHistory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(View)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CoordinatorServer).ViewHistory(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Coordinator_ViewHistory_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CoordinatorServer).ViewHistory(ctx, req.(*View))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Coordinator_ViewBooking_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(View)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CoordinatorServer).ViewBooking(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Coordinator_ViewBooking_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CoordinatorServer).ViewBooking(ctx, req.(*View))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Coordinator_ViewDashboard_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(View)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CoordinatorServer).ViewDashboard(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Coordinator_ViewDashboard_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CoordinatorServer).ViewDashboard(ctx, req.(*View))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Coordinator_SearchBooking_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BookingSearchCriteria)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CoordinatorServer).SearchBooking(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Coordinator_SearchBooking_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CoordinatorServer).SearchBooking(ctx, req.(*BookingSearchCriteria))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Coordinator_ServiceDesc is the grpc.ServiceDesc for Coordinator service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -298,8 +463,8 @@ var Coordinator_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*CoordinatorServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "AddCatagory",
-			Handler:    _Coordinator_AddCatagory_Handler,
+			MethodName: "AddCategory",
+			Handler:    _Coordinator_AddCategory_Handler,
 		},
 		{
 			MethodName: "AvailablePackages",
@@ -324,6 +489,26 @@ var Coordinator_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CoordinatorViewActivity",
 			Handler:    _Coordinator_CoordinatorViewActivity_Handler,
+		},
+		{
+			MethodName: "ViewCoordinators",
+			Handler:    _Coordinator_ViewCoordinators_Handler,
+		},
+		{
+			MethodName: "ViewHistory",
+			Handler:    _Coordinator_ViewHistory_Handler,
+		},
+		{
+			MethodName: "ViewBooking",
+			Handler:    _Coordinator_ViewBooking_Handler,
+		},
+		{
+			MethodName: "ViewDashboard",
+			Handler:    _Coordinator_ViewDashboard_Handler,
+		},
+		{
+			MethodName: "SearchBooking",
+			Handler:    _Coordinator_SearchBooking_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

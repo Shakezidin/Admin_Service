@@ -1,6 +1,7 @@
 package service
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"log"
@@ -9,41 +10,67 @@ import (
 	adminpb "github.com/Shakezidin/pkg/admin/pb"
 	inter "github.com/Shakezidin/pkg/admin/repository/interface"
 	interr "github.com/Shakezidin/pkg/admin/service/interface"
+	pb "github.com/Shakezidin/pkg/admin/userclient/userpb"
 	"github.com/Shakezidin/utils"
-	jwt "github.com/Shakezidin/utils"
 )
 
 type AdminService struct {
-	Repo      inter.RepoInterface
-	codClient clientpb.CoordinatorClient
+	Repo       inter.RepoInterface
+	CodClient  clientpb.CoordinatorClient
+	userClient pb.UserClient
 }
 
-func (a *AdminService) LoginService(p *adminpb.AdminLogin) (*adminpb.AdminResponce, error) {
+func (a *AdminService) LoginService(p *adminpb.AdminLogin) (*adminpb.AdminResponse, error) {
 	admin, err := a.Repo.FetchAdmin(p.Email)
 	if err != nil {
 		return nil, err
 	}
 	if !utils.CheckPasswordMatch([]byte(admin.Password), p.Password) {
 		fmt.Println("password error")
-		return nil, errors.New("passwor incorrect")
+		return nil, errors.New("incorrect password")
 	}
 
-	token, err := jwt.GenerateToken(admin.Email, p.Role)
+	token, err := utils.GenerateToken(admin.Email, p.Role)
 	if err != nil {
 		log.Print("error while generating jwt")
 		return nil, errors.New("error while generating jwt")
 	}
-	adminn := &adminpb.AdminResponce{
+	adminResp := &adminpb.AdminResponse{
 		Status:  "Success",
 		Message: token,
 	}
 
-	return adminn, nil
+	return adminResp, nil
 }
 
-func NewAdminService(repos inter.RepoInterface, codClient clientpb.CoordinatorClient) interr.ServiceInterface {
+func (a *AdminService) ViewDashboard(p *adminpb.AdminView) (*adminpb.AdminDashboard, error) {
+	ctx := context.Background()
+	result, err := a.CodClient.ViewDashboard(ctx, &clientpb.View{})
+	if err != nil {
+		return nil, err
+	}
+
+	rslt, errrr := a.userClient.UsersCount(ctx, &pb.UserView{})
+	if errrr != nil {
+		fmt.Println(errrr)
+	}
+	admin, err := a.Repo.FetchAdmin(p.Status)
+	if err != nil {
+		return nil, errors.New("error while fetching admin")
+	}
+	return &adminpb.AdminDashboard{
+		Wallet:            int64(admin.Wallet),
+		Today:             result.Today,
+		Monthly:           result.Monthly,
+		Coordinator_Count: result.Coordinator_Count,
+		Users_Count:       rslt.User_Count,
+	}, nil
+}
+
+func NewAdminService(repos inter.RepoInterface, codClient clientpb.CoordinatorClient, userclient pb.UserClient) interr.ServiceInterface {
 	return &AdminService{
-		Repo:      repos,
-		codClient: codClient,
+		Repo:       repos,
+		CodClient:  codClient,
+		userClient: userclient,
 	}
 }
